@@ -1,8 +1,4 @@
-// carrito.js — Práctica 3: El carrito que miente
-//
-// Este archivo tiene 3 bugs de LÓGICA (no de sintaxis, la consola no te va
-// a marcar ningún error rojo). Tu trabajo es encontrarlos usando el carrito
-// en el navegador y leyendo el código, no adivinando.
+// carrito.js — Café Origen
 
 // ---------- Lógica del carrito (funciones puras, sin tocar el DOM) ----------
 
@@ -35,7 +31,7 @@ function aumentarCantidad(carrito, id) {
 
 function disminuirCantidad(carrito, id) {
   const item = carrito.find((p) => p.id === id);
-  if (item) item.cantidad--;
+  if (item && item.cantidad > 1) item.cantidad--;
   return carrito;
 }
 
@@ -65,7 +61,7 @@ if (typeof document !== 'undefined') {
   ];
 
   let carrito = [];
-  let descuentoAplicado = false; // ⚠️ este flag existe... ¿se está usando?
+  let descuentoAplicado = false;
 
   function renderizarCatalogo() {
     const cont = document.getElementById('catalogo');
@@ -125,15 +121,13 @@ if (typeof document !== 'undefined') {
       renderizarCarrito();
       actualizarTotal();
     } else if (accion === 'menos') {
-      // BUG: no hay ningún límite aquí — la cantidad puede llegar a 0 o a negativos.
       disminuirCantidad(carrito, id);
       renderizarCarrito();
       actualizarTotal();
     } else if (accion === 'eliminar') {
       carrito = eliminarProducto(carrito, id);
       renderizarCarrito();
-      // BUG: falta actualizar el total aquí — el total se queda con el valor
-      // de antes de eliminar el producto.
+      actualizarTotal();
     }
   });
 
@@ -146,12 +140,21 @@ if (typeof document !== 'undefined') {
       return;
     }
 
-    // BUG: nunca se revisa "descuentoAplicado", así que cada clic vuelve a
-    // restar otro 10% sobre lo que ya se mostraba, aunque el código sea el mismo.
+    if (carrito.length === 0) {
+      mensaje.textContent = 'Agrega productos antes de aplicar el descuento.';
+      return;
+    }
+
+    if (descuentoAplicado) {
+      mensaje.textContent = 'El descuento ya fue aplicado.';
+      return;
+    }
+
     const totalActual = calcularTotal(carrito);
     const totalConDescuento = totalActual - totalActual * 0.1;
     document.getElementById('total').textContent = '$' + totalConDescuento.toFixed(2);
     mensaje.textContent = '¡Descuento aplicado!';
+    descuentoAplicado = true;
   });
 
   renderizarCatalogo();
