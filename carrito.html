@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Práctica 3 — El carrito que miente</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <h1>Café Origen — Carrito</h1>
+
+  <section>
+    <h2>Catálogo</h2>
+    <div id="catalogo"></div>
+  </section>
+
+  <section>
+    <h2>Tu carrito</h2>
+    <div id="lista-carrito"><p class="vacio">Tu carrito está vacío.</p></div>
+  </section>
+
+  <section class="descuento">
+    <label for="codigo-descuento">Código de descuento (prueba: DESCUENTO10)</label>
+    <input type="text" id="codigo-descuento" placeholder="DESCUENTO10">
+    <button id="btn-descuento">Aplicar descuento</button>
+    <p id="mensaje-descuento"></p>
+  </section>
+
+  <h2>Total: <span id="total">$0</span></h2>
+
+  <script src="carrito.js"></script>
+</body>
+</html>
